@@ -9,6 +9,7 @@ logger = logging.getLogger(__name__)
 
 PEPMLM_MODEL_ID = "TianlaiChen/PepMLM-650M"
 PEPMLM_MAX_LENGTH = 550  # trained with max_length=552, minus BOS/EOS
+STANDARD_AAS = set("ACDEFGHIKLMNPQRSTVWY")
 
 
 def generate_pepmlm(
@@ -99,7 +100,9 @@ def generate_pepmlm(
             token_ids = top_k_indices.gather(-1, sampled.unsqueeze(-1)).squeeze(-1)
             sequence = tokenizer.decode(token_ids, skip_special_tokens=True).replace(" ", "")
 
-            if sequence and sequence not in seen_sequences:
+            if sequence and sequence not in seen_sequences and all(
+                aa in STANDARD_AAS for aa in sequence
+            ):
                 seen_sequences.add(sequence)
                 candidates.append(
                     PeptideCandidate(
