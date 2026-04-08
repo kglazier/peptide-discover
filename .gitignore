@@ -1,0 +1,60 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Testing / linting
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+
+# Runtime data
+data/
+results/
+.cache/
+
+# Structure files
+*.pdb
+*.cif
+
+# Model weights
+*.pt
+*.ckpt
+*.bin
+*.safetensors
+
+# OS
+.DS_Store
+Thumbs.db
+*.stackdump
+
+# Secrets
+.env
+
+# Temp files from toxinpred3
+seq.aac
+seq.dpc
+Sequence_*
+
+# Vendor (cloned repos, not our code)
+vendor/
+
+# Claude settings
+.claude/
