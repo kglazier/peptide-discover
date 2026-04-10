@@ -97,7 +97,7 @@ def analyze_resistance(antibiogram_path: Path) -> dict:
     }
 
 
-def design_amps(n_candidates: int, peptide_length: int, skip_docking: bool) -> dict:
+def design_amps(n_candidates: int, peptide_length: int, skip_docking: bool, exhaustiveness: int = 4) -> dict:
     """Design AMPs against E. coli membrane targets."""
     from peptide_discover.stages.target_prep import resolve_target
     from peptide_discover.stages.generation import generate_pepmlm
@@ -127,7 +127,7 @@ def design_amps(n_candidates: int, peptide_length: int, skip_docking: bool) -> d
         if not skip_docking:
             logger.info("  Docking (this will take a while)...")
             binding_results = predict_binding(
-                target, peptides, top_k=n_candidates, exhaustiveness=4,
+                target, peptides, top_k=n_candidates, exhaustiveness=exhaustiveness,
             )
         else:
             logger.info("  Docking skipped.")
@@ -215,10 +215,12 @@ def generate_report(resistance_data: dict, amp_data: dict, output_path: Path) ->
 
 def main():
     parser = argparse.ArgumentParser(description="AMP design for MDR E. coli")
-    parser.add_argument("--candidates", "-n", type=int, default=20,
-                        help="Candidates per target (default: 20)")
-    parser.add_argument("--length", "-l", type=int, default=12,
-                        help="Peptide length (default: 12)")
+    parser.add_argument("--candidates", "-n", type=int, default=30,
+                        help="Candidates per target (default: 30)")
+    parser.add_argument("--length", "-l", type=int, default=8,
+                        help="Peptide length (default: 8)")
+    parser.add_argument("--exhaustiveness", "-e", type=int, default=4,
+                        help="Vina exhaustiveness (default: 4)")
     parser.add_argument("--skip-docking", action="store_true",
                         help="Skip docking (fast mode for testing)")
     args = parser.parse_args()
@@ -242,6 +244,7 @@ def main():
         n_candidates=args.candidates,
         peptide_length=args.length,
         skip_docking=args.skip_docking,
+        exhaustiveness=args.exhaustiveness,
     )
 
     # Step 3: Generate combined report

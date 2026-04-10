@@ -73,8 +73,11 @@ def predict_binding(
                     work_dir=tmpdir,
                 )
                 results.append(result)
+                logger.info(
+                    "  %s: %.2f kcal/mol", candidate.sequence, result.affinity_score,
+                )
             except Exception as e:
-                logger.warning("Failed to dock %s: %s", candidate.sequence, e)
+                logger.warning("Failed to dock %s: %s", candidate.sequence, str(e)[:100])
                 results.append(
                     BindingResult(
                         peptide_sequence=candidate.sequence,
