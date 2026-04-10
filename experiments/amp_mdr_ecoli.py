@@ -97,7 +97,7 @@ def analyze_resistance(antibiogram_path: Path) -> dict:
     }
 
 
-def design_amps(n_candidates: int, peptide_length: int, skip_docking: bool, exhaustiveness: int = 4) -> dict:
+def design_amps(n_candidates: int, peptide_length: int, skip_docking: bool, exhaustiveness: int = 4, target_filter: list[str] | None = None) -> dict:
     """Design AMPs against E. coli membrane targets."""
     from peptide_discover.stages.target_prep import resolve_target
     from peptide_discover.stages.generation import generate_pepmlm
@@ -108,6 +108,9 @@ def design_amps(n_candidates: int, peptide_length: int, skip_docking: bool, exha
     all_results = {}
 
     for name, info in AMP_TARGETS.items():
+        if target_filter and name not in target_filter:
+            logger.info("Skipping %s (not in --targets)", name)
+            continue
         logger.info("=" * 60)
         logger.info("Target: %s — %s", name, info["role"])
         logger.info("UniProt: %s", info["uniprot"])
@@ -223,6 +226,8 @@ def main():
                         help="Vina exhaustiveness (default: 4)")
     parser.add_argument("--skip-docking", action="store_true",
                         help="Skip docking (fast mode for testing)")
+    parser.add_argument("--targets", "-t", type=str, default=None,
+                        help="Comma-separated targets to run (default: all). Options: OmpA,BamA,LptD")
     args = parser.parse_args()
 
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
@@ -240,11 +245,13 @@ def main():
 
     # Step 2: Design AMPs against E. coli membrane targets
     logger.info("\nStep 2: Designing AMPs against E. coli membrane targets...")
+    target_filter = args.targets.split(",") if args.targets else None
     amp_data = design_amps(
         n_candidates=args.candidates,
         peptide_length=args.length,
         skip_docking=args.skip_docking,
         exhaustiveness=args.exhaustiveness,
+        target_filter=target_filter,
     )
 
     # Step 3: Generate combined report
