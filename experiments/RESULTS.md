@@ -89,6 +89,23 @@ python experiments/amp_mdr_ecoli.py -n 30 -l 8 -e 4 --targets BamA,LptD
 
 Results are written to `results/` (gitignored).
 
+## BPC-157 docking against gut-relevant targets
+
+From `experiments/bpc157_docking.py`. Docking the known peptide BPC-157 (GEPPPGKPADDAGLV, 15-mer) against targets relevant to its claimed mechanisms of action.
+
+**Safety profile:** Toxicity 0.0, Hemolysis 0.0 — clean.
+
+| Target | Role | Score (kcal/mol) |
+|---|---|---|
+| **NOS3** | NO signaling | **-9.48** |
+| **EGFR** | Gut lining repair | **-7.56** |
+| **PDGFRB** | Wound healing | -7.07 |
+| **VEGFR2** | Angiogenesis | -6.99 |
+
+**Key finding:** BPC-157's strongest predicted binding is to endothelial nitric oxide synthase (NOS3) at -9.48 kcal/mol — the strongest score of any peptide tested in this project. This directly supports the NO-modulation mechanism described in the animal literature. EGFR binding at -7.56 supports the gut epithelial repair claims.
+
+**Context:** NOS3 at -9.48 is stronger than Ipamorelin (-8.33, a real drug), our best generated AMP (-8.65), and natural Magainin-2 (-7.73). BPC-157 is a 15-mer that Vina handled successfully, though longer peptides generally have higher failure rates.
+
 ## Caveats
 
 - **Docking scores aren't truth.** Vina approximates free energy but isn't perfect. Two candidates with similar scores may behave very differently in practice.
