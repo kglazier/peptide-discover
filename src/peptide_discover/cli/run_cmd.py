@@ -25,7 +25,10 @@ def run_pipeline(
     skip_screening: bool = typer.Option(False, "--skip-screening"),
     skip_docking: bool = typer.Option(False, "--skip-docking"),
     top_k: int = typer.Option(50, "--top-k", "-k", help="Keep top K after docking."),
+    engine: str = typer.Option("vina", "--engine", help="Docking engine: vina (fast, 8-mers) or adcp (handles 15+ mers, WSL)."),
     exhaustiveness: int = typer.Option(8, "--exhaustiveness", "-e", help="Vina exhaustiveness."),
+    adcp_runs: int = typer.Option(10, "--adcp-runs", help="ADCP MC runs per peptide."),
+    adcp_steps: int = typer.Option(2500000, "--adcp-steps", help="ADCP MC steps per run."),
 ) -> None:
     """Run the full peptide discovery pipeline."""
     from peptide_discover.config.tracks import get_track
@@ -65,9 +68,11 @@ def run_pipeline(
 
     # Stage 3: Binding prediction (optional)
     if not skip_docking:
-        console.print("[bold cyan]Stage 3:[/bold cyan] Docking peptides (this may take a while)...")
+        console.print(f"[bold cyan]Stage 3:[/bold cyan] Docking peptides with {engine} (this may take a while)...")
         binding_results = predict_binding(
-            target_protein, peptides, top_k=top_k, exhaustiveness=exhaustiveness,
+            target_protein, peptides, top_k=top_k,
+            engine=engine, exhaustiveness=exhaustiveness,
+            adcp_runs=adcp_runs, adcp_steps=adcp_steps,
         )
         console.print(f"  {len(binding_results)} candidates scored.")
     else:
