@@ -1,0 +1,25 @@
+{
+  "target": "TrkB (Q16620)",
+  "target_role": "BDNF receptor - neuroplasticity",
+  "engine": "adcp",
+  "adcp_runs": 5,
+  "adcp_steps": 1000000,
+  "peptide_length": 15,
+  "status": "partial - 13/15 completed",
+  "remaining_sequences": ["ANRGRQQAFKLCCCC", "unknown - 15th candidate not yet logged"],
+  "results": [
+    {"rank": 1, "sequence": "RRRGRKLLRKYGLCK", "affinity_kcal_mol": -29.90},
+    {"rank": 2, "sequence": "ARKKQTLRRYYACLR", "affinity_kcal_mol": -25.10},
+    {"rank": 3, "sequence": "ANKPRKLKLRAGFCC", "affinity_kcal_mol": -23.50},
+    {"rank": 4, "sequence": "ARNKRLLLKSGCCLC", "affinity_kcal_mol": -22.50},
+    {"rank": 5, "sequence": "ANPKGKKLLLLLFCR", "affinity_kcal_mol": -22.30},
+    {"rank": 6, "sequence": "GRNKRTLAFKLGGCR", "affinity_kcal_mol": -22.30},
+    {"rank": 7, "sequence": "ARKKPQALRYGLLCC", "affinity_kcal_mol": -21.40},
+    {"rank": 8, "sequence": "ARNKKQLLKLLLFCC", "affinity_kcal_mol": -21.10},
+    {"rank": 9, "sequence": "ARNPRLLKRYLLCCC", "affinity_kcal_mol": -20.60},
+    {"rank": 10, "sequence": "ARRGRTLLRKLAGCI", "affinity_kcal_mol": -20.60},
+    {"rank": 11, "sequence": "APPKKAQLRYGLCLC", "affinity_kcal_mol": -17.80},
+    {"rank": 12, "sequence": "APPGKAQRRRLACNL", "affinity_kcal_mol": -17.30},
+    {"rank": 13, "sequence": "RVPGGQLLRKLACLC", "affinity_kcal_mol": -17.20}
+  ]
+}
