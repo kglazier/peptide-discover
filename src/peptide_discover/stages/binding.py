@@ -171,7 +171,7 @@ def _prepare_adcp_target(pdb_path: Path, target_dir: Path, target_name: str) -> 
         f"agfr -r receptor.pdbqt -P 10 -o {target_name}_target 2>&1"
     )
 
-    result = _run_wsl_adcp(cmd, timeout=1800)
+    result = _run_wsl_adcp(cmd, timeout=7200)  # large proteins can take 1hr+
 
     trg_file = target_dir / f"{target_name}_target.trg"
     if not trg_file.exists():
